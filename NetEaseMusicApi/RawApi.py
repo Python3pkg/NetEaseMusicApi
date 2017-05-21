@@ -38,7 +38,7 @@ _API = {
 
 def _APIProxy(key, value, chain):
     if isinstance(value, dict):
-        childrenList = value.keys()
+        childrenList = list(value.keys())
         return lambda:'%s has %s sub functions: %s'%(key, len(childrenList), ', '.join(childrenList))
     else:
         def __APIProxy(nameOrId, limit = DEFAULT_LIMIT):
@@ -75,7 +75,7 @@ def _APIProxy(key, value, chain):
         return __APIProxy
 
 def _setup_apiobj(parent, apiList, chain = []):
-    for k, v in apiList.items():
+    for k, v in list(apiList.items()):
         setattr(parent, k, _APIProxy(k, v, chain + [k]))
         if isinstance(v, dict): _setup_apiobj(getattr(parent, k), v, chain + [k])
 
